@@ -2,6 +2,9 @@ const form = document.getElementById('todo-form');
 const input = document.getElementById('todo-input');
 const list = document.getElementById('todo-list');
 
+const tipBtn = document.getElementById('tip-btn');
+const tipText = document.getElementById('tip-text');
+
 const todos = [];
 
 function render() {
@@ -49,4 +52,21 @@ form.addEventListener('submit', (e) => {
   input.value = '';
   input.focus();
   render();
+});
+
+tipBtn.addEventListener('click', async () => {
+  tipBtn.disabled = true;
+  tipText.textContent = 'Loading tip...';
+
+  try {
+    const res = await fetch('/api/tip');
+    if (!res.ok) throw new Error('Request failed');
+
+    const data = await res.json();
+    tipText.textContent = data.tip;
+  } catch {
+    tipText.textContent = 'Could not reach Python API. Run with: python app.py';
+  } finally {
+    tipBtn.disabled = false;
+  }
 });
