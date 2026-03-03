@@ -4,6 +4,8 @@ const list = document.getElementById('todo-list');
 
 const tipBtn = document.getElementById('tip-btn');
 const tipText = document.getElementById('tip-text');
+const aiBtn = document.getElementById('ai-btn');
+const aiText = document.getElementById('ai-text');
 
 const todos = [];
 
@@ -71,4 +73,37 @@ tipBtn.addEventListener('click', () => {
     tipText.textContent = PRODUCTIVITY_TIPS[randomIndex];
     tipBtn.disabled = false;
   }, 200);
+});
+
+aiBtn.addEventListener('click', async () => {
+  const task = input.value.trim();
+  if (!task) {
+    aiText.textContent = 'Please type a task first.';
+    return;
+  }
+
+  aiBtn.disabled = true;
+  aiText.textContent = 'Thinking...';
+
+  try {
+    const res = await fetch('/api/aiSuggest', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ task })
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'AI request failed');
+
+    const result = data.result || {};
+    if (result.raw) {
+      aiText.textContent = `AI: ${result.raw}`;
+    } else {
+      aiText.textContent = `Priority: ${result.priority || 'n/a'} • Est: ${result.estimateMinutes || '?'} min • First step: ${result.firstStep || 'n/a'}`;
+    }
+  } catch (err) {
+    aiText.textContent = `AI unavailable: ${err.message}`;
+  } finally {
+    aiBtn.disabled = false;
+  }
 });

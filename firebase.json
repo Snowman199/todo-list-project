@@ -1,0 +1,27 @@
+{
+  "functions": {
+    "source": "functions"
+  },
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**",
+      "functions/**",
+      "app.py",
+      "requirements.txt",
+      "render.yaml"
+    ],
+    "rewrites": [
+      {
+        "source": "/api/aiSuggest",
+        "function": "aiSuggest"
+      },
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
