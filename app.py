@@ -1,8 +1,10 @@
 from flask import Flask, jsonify, send_from_directory
+from flask_cors import CORS
 import random
 import os
 
 app = Flask(__name__, static_folder='.')
+CORS(app)
 
 PRODUCTIVITY_TIPS = [
     "Do the hardest task first for 25 minutes.",

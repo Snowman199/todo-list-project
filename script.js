@@ -54,12 +54,14 @@ form.addEventListener('submit', (e) => {
   render();
 });
 
+const API_BASE = 'https://todo-list-project-aa9m.onrender.com';
+
 tipBtn.addEventListener('click', async () => {
   tipBtn.disabled = true;
-  tipText.textContent = 'Loading tip...';
+  tipText.textContent = 'Loading tip... (server may be waking up)';
 
   try {
-    const res = await fetch('/api/tip');
+    const res = await fetch(`${API_BASE}/api/tip`);
     if (!res.ok) throw new Error('Request failed');
 
     const data = await res.json();
