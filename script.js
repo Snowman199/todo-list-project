@@ -54,21 +54,21 @@ form.addEventListener('submit', (e) => {
   render();
 });
 
-const API_BASE = 'https://todo-list-project-aa9m.onrender.com';
+const PRODUCTIVITY_TIPS = [
+  'Do the hardest task first for 25 minutes.',
+  'If a task takes less than 2 minutes, do it now.',
+  'Break big tasks into the next smallest action.',
+  'Set 3 priorities for the day, not 30.',
+  'Batch similar tasks to reduce context switching.'
+];
 
-tipBtn.addEventListener('click', async () => {
+tipBtn.addEventListener('click', () => {
   tipBtn.disabled = true;
-  tipText.textContent = 'Loading tip... (server may be waking up)';
+  tipText.textContent = 'Loading tip...';
 
-  try {
-    const res = await fetch(`${API_BASE}/api/tip`);
-    if (!res.ok) throw new Error('Request failed');
-
-    const data = await res.json();
-    tipText.textContent = data.tip;
-  } catch {
-    tipText.textContent = 'Could not reach Python API. Run with: python app.py';
-  } finally {
+  setTimeout(() => {
+    const randomIndex = Math.floor(Math.random() * PRODUCTIVITY_TIPS.length);
+    tipText.textContent = PRODUCTIVITY_TIPS[randomIndex];
     tipBtn.disabled = false;
-  }
+  }, 200);
 });
